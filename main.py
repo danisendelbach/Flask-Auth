@@ -31,17 +31,15 @@ with app.app_context():
     db.create_all()
 
 @login_manager.user_loader
+#******Wo wird diese user_id gespeichert?******
 def load_user(user_id):
     user_id = int(user_id)
     user = db.session.execute(db.select(User).where(User.id==user_id)).scalar()
     return user
 
-
-
 @app.route('/')
 def home():
     return render_template("index.html")
-
 
 @app.route('/register', methods=["GET","POST"])
 def register():
@@ -60,7 +58,6 @@ def register():
         return redirect("/secrets")
     if request.method=="GET":
         return render_template("register.html")
-
 
 @app.route('/login', methods=["POST","GET"])
 def login():
@@ -82,7 +79,6 @@ def login():
 
     return render_template("login.html", error=error)
 
-
 @app.route('/secrets')
 @login_required
 def secrets():
@@ -91,12 +87,10 @@ def secrets():
         #return login_manager.unauthorized()
     return render_template("secrets.html")
 
-
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect("/")
-
 
 @app.route('/download/')
 @login_required
